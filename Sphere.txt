@@ -6,7 +6,7 @@
 #--------------------------------------
 interval(1)
  findIncludeClass("player") 
- findEcxcludeClass("") #<- Enter name of the player to exclude him from the finding in the sphere.
+ findEcxcludePlayer("") #<- Enter name of the player to exclude him from the finding in the sphere.
  findExcludeClass("mediaplayer_tv")
  findInSphere(entity():pos(),275)
 if(first()){

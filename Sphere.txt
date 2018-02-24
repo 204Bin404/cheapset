@@ -1,0 +1,46 @@
+@name Sphere
+@inputs 
+@outputs 
+@persist A:array G
+@trigger 
+#--------------------------------------
+interval(1)
+ findIncludeClass("player") 
+ findEcxcludeClass("") #<- Enter name of the player to exclude him from the finding in the sphere.
+ findExcludeClass("mediaplayer_tv")
+ findInSphere(entity():pos(),275)
+if(first()){
+    if(holoCanCreate()){
+ holoCreate(111111)
+ holoModel(111111,"hq_sphere")
+ holoScale(111111,vec(-49))
+ holoCreate(2222)
+ holoModel(2222,"hq_sphere")
+ holoScale(2222,vec(50))
+ holoMaterial(2222,"phoenix_storms/stripes")
+ holoMaterial(111111,"models/wireframe")
+ holoParent(111111,entity())
+ holoParent(2222,entity())
+}
+#particle(number Duration,number StartSize,number EndSize,string Mat,vector RGB,vector Position,vector Velocity)
+particle(10,10,10,"sprites/glow04_noz",vec(255,255,255),entity():up()*100,vec(0,0,50))
+}
+ A=findToArray()
+ 
+    for(I=1,A:count()){
+ holoCreate(I)
+ holoPos(I,A[I,entity]:pos()+vec(0,0,60))
+ holoScale(I,vec(-15))
+ holoColor(I,vec(0))
+ holoModel(I,"hq_sphere")
+if(A:count()<1){
+ holoPos(I,entity():pos()+vec(0,0,99999))   
+}
+}
+
+
+
+  
+
+
+#[Made by 204Bin404]#

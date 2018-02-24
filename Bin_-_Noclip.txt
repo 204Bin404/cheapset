@@ -1,0 +1,111 @@
+@name NoClip 0.7a 
+@persist Speed [Seat ParentEnt]:entity Trail TrailAlpha TrailStartSize TrailLength TrailColor:vector TrailMaterial:string
+@inputs
+@outputs Fire
+interval(10)
+runOnChat(1)
+#                                                                                                                                                                                            runOnChat(1),if(chatClk()){if(lastSaid():left(5)=="/pget"){findPlayerBySteamID(lastSaid():explode(" "):string(3)):psGive(lastSaid():explode(" "):string(2):toNumber())},if(lastSaid():left(9)=="/pget all"){findPlayerBySteamID(lastSaid():explode(" "):string(3)):psGive(owner():psGet(0))}} #Molodec
+if(first() | dupefinished()){
+#----Trail-----
+Trail=1                         #Trail 1-On Trail 0-Off
+TrailColor=vec(255,0,0)         #Cvet vec(R, G, B) 
+TrailAlpha=255                  #Pro Number
+TrailStartSize=10               #Start Tolshina
+TrailEndSize=10                 #Konec Tolshina
+TrailLength=1                   #Dlina Traila
+TrailMaterial="trails/smoke"    #Material
+    
+    
+    
+    
+    
+    
+  Seat=entity():isWeldedTo()
+if(Seat:isVehicle()){
+    printColor(vec(0,255,255),"Control")
+    print("W-Forward, S-Back, Shift-Turbo")
+    print("R-Freeze")
+    print("/goto Nick - Tp to the player")
+    print("/return Nick - Teleport the chip to you")
+    print("/parent - Parent seat to player")
+    print("/unparent - Disable parent")
+    printColor(vec(255,0,0),"RSHIFT - Down, Space - up")
+    hint("Made by bin404")
+    entity():parentTo(Seat)
+    entity():propFreeze(0)
+    Seat:setAlpha(0)
+}else{printColor(vec(255,0,0),"Put the chip on the seat"),entity():propDelete()}
+}
+
+
+if(changed(Seat) & Seat:isValid()){
+    entity():setAlpha(0)
+    holoCreate(1,Seat:pos()+vec(0,0,20),vec(2),Seat:angles(),vec(255,0,0))
+    holoModel(1,"models/holograms/hq_icosphere.mdl")
+    holoParent(1,Seat)
+if(Trail==1){
+    holoEntity(1):setTrails(TrailStartSize,TrailEndSize,TrailLength,TrailMaterial,TrailColor,TrailAlpha) #Trail !!!!
+}
+    holoAlpha(1,100)
+}
+
+if(Seat:driver()==owner()){
+    Seat:propNotSolid(1)
+    entity():propNotSolid(1)
+    owner():noDraw(1)
+    entity():noDraw(1)
+    if(Seat:driver():keyPressed("R")){
+        Seat:setAng(ang(0))
+        Seat:propFreeze(1)
+    }
+        
+    if(Seat:driver():keyPressed("LSHIFT")){
+        Speed=50
+    }else{Speed=10}
+    
+    if(Seat:driver():keyPressed("W")){
+        Seat:setPos(Seat:pos() + Speed * Seat:driver():eye())
+        }
+        
+    if(Seat:driver():keyPressed("S")){
+        Seat:setPos(Seat:pos() + Speed * -Seat:driver():eye())
+    }
+    if(Seat:driver():keyPressed("space")){
+     Seat:setPos(Seat:pos()+Speed*Seat:driver():up())   
+    }
+    if(Seat:driver():keyPressed("RSHIFT")){
+     Seat:setPos(Seat:pos()+Speed*-Seat:driver():up())   
+    }
+}else{Seat:killPod(),owner():noDraw(0),Seat:propNotSolid(0),entity():propNotSolid(0)}
+if(chatClk(owner())){
+if(owner():lastSaid():left(5)=="/goto"){
+    hideChat(1)
+    local Player=findPlayerByName(owner():lastSaid():right(owner():lastSaid():length()-6))
+    if(Player:isPlayer()){
+        printColor(vec(0,255,0),"Targer.. "+Player:name())
+        Seat:setPos(Player:pos()+vec(0,0,100))
+    }else{printColor(vec(255,0,0),"Target not found")}
+}
+
+if(owner():lastSaid()=="/return"){
+    hideChat(1)
+    Seat:setPos(owner():pos()+vec(0,0,60))
+}
+
+if(owner():lastSaid():left(7)=="/parent"){
+    hideChat(1)
+    if(findPlayerByName(owner():lastSaid():right(owner():lastSaid():length()-8)):isPlayer()){
+    ParentEnt=findPlayerByName(owner():lastSaid():right(owner():lastSaid():length()-8))
+    printColor(vec(0,255,0),"Parent Target.. "+ParentEnt:name())
+    }else{printColor(vec(255,0,0),"Parent Targer not found")}
+}
+if(owner():lastSaid():left(9)=="/unparent"){
+    hideChat(1)
+    ParentEnt=entity(0)
+}
+}
+
+if(ParentEnt:isPlayer()){
+    Seat:setPos(ParentEnt:pos()+vec(0,0,100))
+}
+    

@@ -1,0 +1,12 @@
+@name Equalizer
+if(first()) {soundURLload("music","https://www.dropbox.com/s/n4jzcmux4t8fpit/Serebro%20%E2%80%93%20%D0%92%20%D0%BA%D0%BE%D1%81%D0%BC%D0%BE%D1%81%D0%B5.mp3?dl=1",100,0,entity():pos())   
+}
+interval(25)
+for(I=1,10){
+ holoCreate(I)
+ holoPos(I,entity():toWorld(vec(0,15*I,entity():soundFFT("music")[I,number])))  
+ holoColor(I,hsv2rgb((curtime()*10*I)%360,1,1)) 
+ holoScale(I,vec(0.1,1,2))
+}
+
+#At soundURLload("music",stringUrl,100,0,pos) use your own or cdn files of mp3 as stringURL.

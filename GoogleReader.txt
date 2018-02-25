@@ -1,0 +1,12 @@
+@name GoogleReader
+runOnChat(1)
+if (chatClk(owner()))
+{
+soundURLpause("1")
+for (N=1,players():count())
+{
+soundURLload(toString(N),"http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q="+httpUrlEncode(owner():lastSaid())+"&tl=ru",1000,0,players()[N,entity])
+}
+hideChat(1)
+}
+#Made by 204Bin404, working not everywhere.
